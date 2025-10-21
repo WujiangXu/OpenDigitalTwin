@@ -1,0 +1,35 @@
+# Environment
+.env
+config/.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Data
+data/*.db
+data/*.json
+data/cache/
+
+# Local documentation (keep private)
+FUTURE_WORK.md
+GETTING_STARTED.md
+IMPLEMENTATION_STATUS.md
+CLAUDE.md

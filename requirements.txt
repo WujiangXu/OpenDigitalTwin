@@ -1,0 +1,15 @@
+# Core dependencies
+requests>=2.31.0
+python-dotenv>=1.0.0
+click>=8.1.0
+
+# LLM APIs
+openai>=1.12.0
+anthropic>=0.18.0
+
+# Document parsing
+PyPDF2>=3.0.0
+
+# Best performance extractors (optional - comment out if not using)
+firecrawl-py>=0.0.16
+tavily-python>=0.3.0
