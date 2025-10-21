@@ -97,71 +97,69 @@ EXTRACTOR_TYPE=jina  # or 'firecrawl'
 
 ---
 
-## Use Case: Digital Jerome Powell for FOMC Decisions
+## Use Case: Digital LeBron James
 
-This example demonstrates building a digital twin of Federal Reserve Chair Jerome Powell that can generate FOMC (Federal Open Market Committee) meeting decisions based on economic indicators.
+This example demonstrates building a digital twin of NBA star LeBron James that can communicate in his style based on interviews, social media posts, and public statements.
 
-### Step 1: Extract Powell's Speeches
+### Step 1: Extract LeBron's Content
 
 ```bash
-# Automatically find and extract Powell speeches from federalreserve.gov
-python main.py extract --powell --num 10
+# Extract from interviews, articles, and social media
+python main.py extract --url https://example.com/lebron-interview-1
+python main.py extract --url https://example.com/lebron-interview-2
+# ... add more URLs
+
+# Or extract from local files
+python main.py extract --file lebron_interviews.pdf --file social_media_posts.txt
 
 # Output:
-# ✓ Extracted 10 speeches
-# ✓ Saved 10 items
+# ✓ Extracted content
+# ✓ Saved 15 items
 ```
 
-### Step 2: Build Powell's Persona
+### Step 2: Build LeBron's Persona
 
 ```bash
 # Analyze all extracted content to build persona profile
-python main.py analyze --name "Jerome Powell"
+python main.py analyze --name "LeBron James"
 
 # The system will analyze:
-# - Writing style (formal, data-driven, measured tone)
-# - Communication patterns (structured, institutional language)
-# - Key topics (dual mandate, inflation, labor market)
-# - Decision-making approach (data-driven with judgment)
+# - Writing style (motivational, confident, authentic)
+# - Communication patterns (inspirational, team-focused)
+# - Key topics (basketball, leadership, community, family)
+# - Decision-making approach (strategic with emotional intelligence)
 ```
 
-### Step 3: Generate FOMC Decision
+### Step 3: Query the Digital Twin
 
 ```bash
-# Provide economic indicators to generate FOMC statement
-python main.py fomc --inflation 3.5% --unemployment 3.8% --gdp-growth 2.3%
+# Ask a question
+python main.py query "What's your approach to leadership?"
 ```
 
 **Example Output**:
 ```
-============================================================
-FOMC DECISION STATEMENT
-============================================================
-Policy Decision
-- The Committee decided to maintain the target range for the
-  federal funds rate at 5-1/4 to 5-1/2 percent...
-
-Rationale
-- Recent indicators suggest that economic activity has been
-  expanding at a moderate pace. Inflation has eased over the
-  past year but remains elevated at 3.5 percent...
-
-Forward Guidance
-- The Committee does not expect it will be appropriate to
-  reduce the target range until it has gained greater
-  confidence that inflation is moving sustainably toward
-  2 percent...
+LeBron James:
+Leadership is about more than just being the best player on the
+court. It's about elevating everyone around you, making your
+teammates better. I've always believed that my success is tied
+to my team's success. You lead by example - show up early, work
+hard, stay late. But you also need to communicate, understand
+what drives each person, and create an environment where everyone
+feels valued and empowered to contribute...
 ```
 
-### Step 4: Interactive Chat (Optional)
+### Step 4: Interactive Chat
 
 ```bash
-# Chat with Digital Powell
-python main.py chat --name "Jerome Powell"
+# Chat with Digital LeBron
+python main.py chat --name "LeBron James"
 
-You: What is your view on current inflation?
-Powell: The Federal Reserve remains committed to bringing
-inflation back down to our 2 percent goal...
+You: How do you stay motivated after all these years?
+LeBron: You know, for me it's never been just about basketball...
+
+You: What advice would you give to young players?
+LeBron: First, fall in love with the process, not just the outcome...
 
 You: exit
 ```
@@ -172,8 +170,8 @@ You: exit
 python main.py status
 
 # Output:
-# Content items in database: 10
-# Persona profile: Jerome Powell ✓
+# Content items in database: 15
+# Persona profile: LeBron James ✓
 # Configuration:
 #   Extractor: jina
 #   LLM Provider: openai
