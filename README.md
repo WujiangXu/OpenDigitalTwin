@@ -29,15 +29,20 @@ Unlike static chatbots, OpenDigitalTwin builds digital twins that can evolve and
 - Simple command-line tools
 - Extract → Analyze → Query/Chat workflow
 
-## Future Capabilities (Roadmap)
+## Capabilities
 
-### 🔄 Agentic Memory System (Phase 1)
+### ✅ Agentic Memory System (Phase 1 - NEW!)
 Based on [A-MEM](https://github.com/WujiangXu/A-mem-sys) (NeurIPS 2025):
-- **Long-term Memory**: Dynamic persona evolution
-- **Working Memory**: Multi-turn conversation context
-- **Episodic Memory**: Interaction history tracking
-- **Semantic Search**: Meaning-based retrieval
-- **External Input**: Manual content addition
+- **✅ Semantic Search**: Hybrid retrieval (semantic + BM25) for intelligent context retrieval
+- **✅ Conversation Memory**: Track and recall multi-turn dialogue history
+- **✅ Memory Evolution**: Consolidate and evolve memories based on relationships
+- **✅ LLM-Powered**: Automatic metadata generation (keywords, context, tags)
+- **🔄 User Modeling**: Personalized responses per user (coming soon)
+- **🔄 Memory Analytics**: Visualize memory relationships (coming soon)
+
+📚 See [docs/MEMORY_SYSTEM.md](docs/MEMORY_SYSTEM.md) for detailed documentation and usage.
+
+## Future Capabilities (Roadmap)
 
 ### 🔄 User Modeling (Phase 3)
 - Track user preferences and patterns
@@ -238,7 +243,15 @@ OpenDigitalTwin/
 ├── src/
 │   ├── extractor/          # Data collection modules
 │   ├── persona/            # Persona analysis & generation
+│   ├── memory/             # Memory system (A-MEM integration)
 │   └── cli.py              # CLI interface
+├── tests/                  # Test suite
+│   ├── test_digital_twin_memory.py    # Pytest tests
+│   └── manual_test_memory.py          # Manual test script
+├── docs/                   # Documentation
+│   ├── MEMORY_SYSTEM.md    # Memory system guide
+│   └── TEST_PLAN.md        # Testing documentation
+├── A-mem-sys/              # A-MEM submodule
 ├── config/.env             # Configuration
 ├── data/database.db        # SQLite storage
 ├── main.py                 # Entry point
@@ -247,7 +260,9 @@ OpenDigitalTwin/
 
 ## Documentation
 
-- **README.md** (this file): Quick start and Powell FOMC use case
+- **README.md** (this file): Quick start and LeBron James use case
+- **[docs/MEMORY_SYSTEM.md](docs/MEMORY_SYSTEM.md)**: Memory system documentation
+- **[docs/TEST_PLAN.md](docs/TEST_PLAN.md)**: Testing strategy and results
 
 ## API Keys
 
