@@ -10,6 +10,10 @@ anthropic>=0.18.0
 # Document parsing
 PyPDF2>=3.0.0
 
+# Voice capabilities (for English Teaching Assistant)
+pyaudio>=0.2.13
+wave
+
 # Best performance extractors (optional - comment out if not using)
 firecrawl-py>=0.0.16
 tavily-python>=0.3.0

@@ -12,6 +12,10 @@ from extractor.storage import Storage
 from persona.analyzer import PersonaAnalyzer
 from persona.generator import ResponseGenerator
 from persona.llm_client import LLMClient
+from teacher.english_teacher import EnglishTeacher
+from voice.audio_recorder import AudioRecorder
+from voice.speech_to_text import SpeechToText
+from voice.text_to_speech import TextToSpeech
 
 # Load environment variables
 load_dotenv('config/.env')
@@ -312,6 +316,125 @@ def status():
     click.echo(f"\nConfiguration:")
     click.echo(f"  Extractor: {extractor_type}")
     click.echo(f"  LLM Provider: {llm_provider}")
+
+
+@cli.command()
+@click.option('--voice', '-v',
+              type=click.Choice(['alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer']),
+              default='nova',
+              help='Voice to use for text-to-speech (nova=female, onyx=male)')
+@click.option('--no-memory', is_flag=True, help='Disable conversation memory')
+def voice_chat(voice, no_memory):
+    """Voice-enabled English teaching assistant (Mac optimized).
+
+    Press Enter to start/stop recording. Type 'quit' or 'exit' to end.
+    """
+    try:
+        # Initialize components
+        click.echo("\n" + "="*60)
+        click.echo("🎓 English Teaching Assistant - Voice Chat Mode")
+        click.echo("="*60)
+        click.echo("\n⚙️  Initializing...")
+
+        teacher = EnglishTeacher(use_memory=not no_memory)
+        stt = SpeechToText()
+        tts = TextToSpeech(voice=voice)
+        recorder = AudioRecorder()
+
+        click.echo(f"✓ Teacher initialized")
+        click.echo(f"✓ Voice: {voice}")
+        click.echo(f"✓ Memory: {'Disabled' if no_memory else 'Enabled'}")
+
+        # Show instructions
+        click.echo("\n" + "-"*60)
+        click.echo("📋 Instructions:")
+        click.echo("  1. Press ENTER to start recording")
+        click.echo("  2. Speak your message in English")
+        click.echo("  3. Press ENTER again to stop and send")
+        click.echo("  4. Type 'quit', 'exit', or 'save' to end")
+        click.echo("-"*60 + "\n")
+
+        # Start conversation with greeting
+        greeting = teacher.get_greeting()
+        click.echo(f"🤖 Teacher: {greeting}\n")
+        tts.speak(greeting)
+
+        # Main conversation loop
+        while True:
+            try:
+                # Check if user wants to type instead
+                user_input = click.prompt(
+                    "\nPress ENTER to record, or type your message",
+                    type=str,
+                    default="",
+                    show_default=False
+                )
+
+                if user_input.lower() in ['quit', 'exit']:
+                    # Save conversation before exiting
+                    click.echo("\n💾 Saving conversation...")
+                    teacher.save_session()
+                    click.echo("\n👋 Goodbye! Keep practicing your English!")
+                    break
+
+                elif user_input.lower() == 'save':
+                    teacher.save_session()
+                    click.echo("Type 'quit' to exit or press ENTER to continue...")
+                    continue
+
+                # If user typed something, use that
+                if user_input.strip():
+                    student_message = user_input
+                    click.echo(f"👤 You (typed): {student_message}")
+
+                else:
+                    # Record audio
+                    click.echo("\n🎤 Recording started... (Press ENTER when done)")
+                    audio_file = recorder.record_until_enter()
+
+                    # Transcribe
+                    click.echo("🔄 Transcribing...")
+                    student_message = stt.transcribe(audio_file)
+                    click.echo(f"👤 You said: {student_message}")
+
+                # Check for exit commands in transcription
+                if student_message.lower().strip() in ['quit', 'exit', 'goodbye', 'bye']:
+                    click.echo("\n💾 Saving conversation...")
+                    teacher.save_session()
+                    response = "Goodbye! It was great practicing English with you. Keep up the good work!"
+                    click.echo(f"\n🤖 Teacher: {response}\n")
+                    tts.speak(response)
+                    break
+
+                # Generate response
+                click.echo("💭 Thinking...")
+                response = teacher.chat(student_message)
+
+                # Display and speak response
+                click.echo(f"\n🤖 Teacher: {response}\n")
+                tts.speak(response)
+
+            except KeyboardInterrupt:
+                click.echo("\n\n⚠️  Interrupted. Saving conversation...")
+                teacher.save_session()
+                click.echo("👋 Goodbye!")
+                break
+
+            except Exception as e:
+                click.echo(f"\n⚠️  Error: {str(e)}", err=True)
+                click.echo("Let's try again...\n")
+
+    except Exception as e:
+        click.echo(f"\n❌ Failed to initialize: {str(e)}", err=True)
+        click.echo("\nMake sure you have:")
+        click.echo("  - OPENAI_API_KEY set in config/.env")
+        click.echo("  - PyAudio installed (brew install portaudio && pip install pyaudio)")
+        return
+
+    finally:
+        # Cleanup
+        if 'recorder' in locals():
+            recorder.cleanup()
 
 
 if __name__ == '__main__':

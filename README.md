@@ -29,6 +29,15 @@ Unlike static chatbots, OpenDigitalTwin builds digital twins that can evolve and
 - Simple command-line tools
 - Extract → Analyze → Query/Chat workflow
 
+### ✅ Voice-Enabled English Teaching Assistant (NEW!)
+- **Voice Conversation**: Speak and listen to practice English naturally
+- **AI-Powered Teaching**: GPT-4 adaptive responses for language learning
+- **Conversation Memory**: Tracks progress across learning sessions
+- **Cost-Effective**: Only ~$5-10/month for daily practice
+- **Mac Optimized**: Native macOS audio support
+
+📖 Quick Start: `./english_teacher.sh` or see [README_ENGLISH_TEACHER.md](README_ENGLISH_TEACHER.md)
+
 ## Capabilities
 
 ### ✅ Agentic Memory System (Phase 1 - NEW!)
@@ -225,6 +234,7 @@ python main.py status                        # Check system status
 ```bash
 python main.py query "question"              # Ask single question
 python main.py chat --name "Name"            # Interactive chat
+python main.py voice-chat                    # Voice English teaching assistant
 python main.py fomc --inflation X% --unemployment Y%  # Generate FOMC decision
 ```
 
@@ -244,23 +254,30 @@ OpenDigitalTwin/
 │   ├── extractor/          # Data collection modules
 │   ├── persona/            # Persona analysis & generation
 │   ├── memory/             # Memory system (A-MEM integration)
+│   ├── voice/              # Voice interaction (STT/TTS)
+│   ├── teacher/            # English teaching assistant
 │   └── cli.py              # CLI interface
 ├── tests/                  # Test suite
 │   ├── test_digital_twin_memory.py    # Pytest tests
 │   └── manual_test_memory.py          # Manual test script
 ├── docs/                   # Documentation
-│   ├── MEMORY_SYSTEM.md    # Memory system guide
-│   └── TEST_PLAN.md        # Testing documentation
+│   ├── MEMORY_SYSTEM.md               # Memory system guide
+│   ├── TEST_PLAN.md                   # Testing documentation
+│   └── ENGLISH_TEACHER_SETUP.md       # English teacher setup
 ├── A-mem-sys/              # A-MEM submodule
 ├── config/.env             # Configuration
 ├── data/database.db        # SQLite storage
 ├── main.py                 # Entry point
+├── english_teacher.sh      # Quick launch script
+├── README_ENGLISH_TEACHER.md  # English teacher README
 └── requirements.txt        # Dependencies
 ```
 
 ## Documentation
 
 - **README.md** (this file): Quick start and LeBron James use case
+- **[README_ENGLISH_TEACHER.md](README_ENGLISH_TEACHER.md)**: English teaching assistant quick start
+- **[docs/ENGLISH_TEACHER_SETUP.md](docs/ENGLISH_TEACHER_SETUP.md)**: Detailed English teacher setup guide
 - **[docs/MEMORY_SYSTEM.md](docs/MEMORY_SYSTEM.md)**: Memory system documentation
 - **[docs/TEST_PLAN.md](docs/TEST_PLAN.md)**: Testing strategy and results
 
