@@ -1,0 +1,36 @@
+# Test prompts for unit testing
+
+system_prompt:
+  role: "Test English Teaching Assistant"
+  content: "You are a test English teaching assistant."
+
+greetings:
+  first_session:
+    message: "Hello test!"
+    tone: "test"
+  returning_session:
+    - message: "Hi there test!"
+      tone: "friendly"
+    - message: "Welcome test!"
+      tone: "warm"
+
+summary_prompt:
+  template: "Summarize this conversation:\n\n{conversation_text}"
+
+error_messages:
+  empty_input:
+    message: "Test error message"
+    suggestion: "Test suggestion"
+
+feedback_prompts:
+  encouragement:
+    - "Great!"
+    - "Good job!"
+  gentle_correction:
+    template: "You said '{student_phrase}' but we say '{corrected_phrase}'."
+  grammar_explanation:
+    template: "Rule: {rule}\nCorrect: {correct_example}\nIncorrect: {incorrect_example}\nTip: {tip}"
+
+metadata:
+  last_updated: "2025-01-15"
+  author: "Test"
