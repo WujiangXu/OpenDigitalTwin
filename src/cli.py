@@ -13,6 +13,7 @@ from persona.analyzer import PersonaAnalyzer
 from persona.generator import ResponseGenerator
 from persona.llm_client import LLMClient
 from teacher.english_teacher import EnglishTeacher
+from teacher.scenario_manager import ScenarioManager
 from voice.audio_recorder import AudioRecorder
 from voice.speech_to_text import SpeechToText
 from voice.text_to_speech import TextToSpeech
@@ -433,6 +434,216 @@ def voice_chat(voice, no_memory):
 
     finally:
         # Cleanup
+        if 'recorder' in locals():
+            recorder.cleanup()
+
+
+@cli.command()
+@click.option('--list', 'list_scenarios', is_flag=True, help='List available scenarios')
+@click.option('--category', '-c', help='Filter by category (academic, social, professional, etc.)')
+@click.option('--difficulty', '-d', type=click.Choice(['beginner', 'intermediate', 'advanced']),
+              help='Filter by difficulty level')
+@click.option('--scenario-id', '-s', help='Specific scenario ID to practice')
+@click.option('--random', 'use_random', is_flag=True, help='Start a random scenario')
+@click.option('--voice', '-v',
+              type=click.Choice(['alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer']),
+              default='nova', help='Voice for text-to-speech')
+def scenario(list_scenarios, category, difficulty, scenario_id, use_random, voice):
+    """Practice English with scenario-based role-play conversations.
+
+    Designed for CS PhD students - practice academic, social, and professional situations.
+    """
+    try:
+        # Initialize scenario manager
+        scenario_mgr = ScenarioManager()
+
+        # List scenarios if requested
+        if list_scenarios:
+            scenarios = scenario_mgr.list_scenarios(
+                category=category,
+                difficulty=difficulty
+            )
+
+            if not scenarios:
+                click.echo("No scenarios found matching criteria.")
+                return
+
+            # Group by category
+            by_category = {}
+            for s in scenarios:
+                if s.category not in by_category:
+                    by_category[s.category] = []
+                by_category[s.category].append(s)
+
+            click.echo("\n" + "=" * 70)
+            click.echo("📚 Available Scenarios for CS PhD Students")
+            click.echo("=" * 70)
+
+            for cat, scens in sorted(by_category.items()):
+                click.echo(f"\n{cat.upper().replace('_', ' ')}:")
+                click.echo("-" * 70)
+                for s in scens:
+                    click.echo(f"  [{s.difficulty}] {s.scenario_id}")
+                    click.echo(f"    {s.title}")
+                    click.echo(f"    {s.description}")
+                    click.echo(f"    Duration: ~{s.duration_minutes} min | Role: {s.ai_role['name']}")
+                    click.echo()
+
+            # Show statistics
+            stats = scenario_mgr.get_statistics()
+            click.echo("=" * 70)
+            click.echo(f"Total scenarios: {stats['total_scenarios']}")
+            click.echo(f"Difficulties: {dict(stats['by_difficulty'])}")
+
+            return
+
+        # Select scenario
+        selected_scenario = None
+
+        if scenario_id:
+            selected_scenario = scenario_mgr.get_scenario(scenario_id)
+            if not selected_scenario:
+                click.echo(f"Error: Scenario '{scenario_id}' not found.")
+                click.echo("Use --list to see available scenarios.")
+                return
+
+        elif use_random:
+            selected_scenario = scenario_mgr.get_random_scenario(
+                category=category,
+                difficulty=difficulty
+            )
+
+        else:
+            # Interactive selection
+            scenarios = scenario_mgr.list_scenarios(
+                category=category,
+                difficulty=difficulty
+            )
+
+            if not scenarios:
+                click.echo("No scenarios available. Try different filters.")
+                return
+
+            click.echo("\nAvailable Scenarios:")
+            for i, s in enumerate(scenarios, 1):
+                click.echo(f"{i}. [{s.difficulty}] {s.title}")
+
+            choice = click.prompt("\nSelect a scenario (number)", type=int)
+
+            if 1 <= choice <= len(scenarios):
+                selected_scenario = scenarios[choice - 1]
+            else:
+                click.echo("Invalid selection.")
+                return
+
+        # Initialize teacher and voice components
+        click.echo("\n⚙️  Initializing scenario practice...")
+
+        teacher = EnglishTeacher()
+        stt = SpeechToText()
+        tts = TextToSpeech(voice=voice)
+        recorder = AudioRecorder()
+
+        # Start the scenario
+        intro_message = teacher.start_scenario(selected_scenario.scenario_id)
+
+        click.echo("\n" + intro_message)
+
+        # Show cultural notes if academic/professional
+        if selected_scenario.category in ['academic', 'professional']:
+            notes = scenario_mgr.get_cultural_notes('american_academic_culture')
+            if notes and 'american_academic_culture' in notes:
+                click.echo("\n💡 Cultural Tips:")
+                for note in notes['american_academic_culture'][:3]:
+                    click.echo(f"  • {note}")
+
+        click.echo("\n" + "-" * 70)
+        click.echo("🎤 Press ENTER to start speaking (or type your message)")
+        click.echo("   Type 'end' to finish the scenario and see summary")
+        click.echo("   Type 'progress' to see your progress")
+        click.echo("-" * 70 + "\n")
+
+        # Conversation loop
+        while True:
+            try:
+                # Get user input (voice or text)
+                user_input = click.prompt(
+                    f"\n[{selected_scenario.ai_role['name']}] Press ENTER to record or type",
+                    type=str,
+                    default="",
+                    show_default=False
+                )
+
+                if user_input.lower() == 'end':
+                    # End scenario and show summary
+                    summary = teacher.end_scenario()
+
+                    click.echo("\n" + "=" * 70)
+                    click.echo(f"✅ Scenario Completed: {summary['scenario']}")
+                    click.echo("=" * 70)
+                    click.echo(f"\n📊 Performance:")
+                    click.echo(f"  • Conversation exchanges: {summary['duration']}")
+                    click.echo(f"\n🎯 Learning Objectives Covered:")
+                    for obj in summary['learning_objectives']:
+                        click.echo(f"  ✓ {obj}")
+                    click.echo(f"\n📚 Vocabulary Practiced:")
+                    click.echo(f"  {', '.join(summary['vocabulary_practiced'][:10])}")
+                    if len(summary['vocabulary_practiced']) > 10:
+                        click.echo(f"  ... and {len(summary['vocabulary_practiced']) - 10} more")
+                    click.echo(f"\n📝 Conversation Summary:")
+                    click.echo(f"  {summary['conversation_summary']}")
+
+                    # Save
+                    filepath = teacher.save_session()
+                    click.echo(f"\n💾 Session saved to: {filepath}")
+
+                    break
+
+                elif user_input.lower() == 'progress':
+                    progress = teacher.get_scenario_progress()
+                    if progress:
+                        click.echo(f"\n📈 Progress:")
+                        click.echo(f"  • Scenario: {progress['scenario']}")
+                        click.echo(f"  • Exchanges: {progress['exchanges_completed']}")
+                        click.echo(f"  • Estimated duration: {progress['estimated_duration_minutes']} min")
+                        click.echo(f"  • Speaking with: {progress['ai_character']}")
+                    continue
+
+                # Get user message
+                if user_input.strip():
+                    student_message = user_input
+                    click.echo(f"👤 You: {student_message}")
+                else:
+                    # Record audio
+                    click.echo("\n🎤 Recording... (Press ENTER when done)")
+                    audio_file = recorder.record_until_enter()
+
+                    click.echo("🔄 Transcribing...")
+                    student_message = stt.transcribe(audio_file)
+                    click.echo(f"👤 You said: {student_message}")
+
+                # Generate AI response
+                click.echo("💭 Thinking...")
+                response = teacher.chat(student_message)
+
+                # Display and speak
+                click.echo(f"\n🤖 {selected_scenario.ai_role['name']}: {response}\n")
+                tts.speak(response)
+
+            except KeyboardInterrupt:
+                click.echo("\n\n⚠️  Scenario interrupted.")
+                teacher.end_scenario()
+                break
+
+            except Exception as e:
+                click.echo(f"\n⚠️  Error: {str(e)}")
+                click.echo("Let's try again...\n")
+
+    except Exception as e:
+        click.echo(f"\n❌ Failed to initialize: {str(e)}")
+        return
+
+    finally:
         if 'recorder' in locals():
             recorder.cleanup()
 

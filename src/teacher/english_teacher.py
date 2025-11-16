@@ -11,6 +11,7 @@ from ..persona.llm_client import LLMClient
 from ..memory.digital_twin_memory import DigitalTwinMemory
 from .prompt_loader import PromptLoader
 from .config import TeacherConfig
+from .scenario_manager import ScenarioManager, Scenario
 
 
 # Configure logging
@@ -24,7 +25,8 @@ class EnglishTeacher:
         self,
         llm_client: Optional[LLMClient] = None,
         config: Optional[TeacherConfig] = None,
-        prompt_loader: Optional[PromptLoader] = None
+        prompt_loader: Optional[PromptLoader] = None,
+        scenario_manager: Optional[ScenarioManager] = None
     ):
         """Initialize the English teaching assistant.
 
@@ -32,6 +34,7 @@ class EnglishTeacher:
             llm_client: LLM client for generating responses
             config: Configuration object for the teacher
             prompt_loader: Prompt template loader
+            scenario_manager: Scenario manager for role-play conversations
         """
         # Initialize configuration
         self.config = config or TeacherConfig.from_env()
@@ -72,6 +75,10 @@ class EnglishTeacher:
 
         # Conversation history (in-memory for current session)
         self.conversation_history: List[Dict[str, str]] = []
+
+        # Scenario management
+        self.scenario_manager = scenario_manager or ScenarioManager()
+        self.current_scenario: Optional[Scenario] = None
 
         # Load system prompt
         self.system_prompt = self.prompt_loader.get_system_prompt()
@@ -335,4 +342,86 @@ class EnglishTeacher:
             "teacher_words": sum(len(msg["content"].split()) for msg in teacher_messages),
             "memory_enabled": self.config.use_memory,
             "model": self.config.model
+        }
+
+    # Scenario-based learning methods
+   
+    def start_scenario(self, scenario_id: str) -> str:
+        """Start a scenario-based conversation.
+
+        Args:
+            scenario_id: ID of the scenario to start
+
+        Returns:
+            Introduction message for the scenario
+        """
+        scenario = self.scenario_manager.get_scenario(scenario_id)
+        
+        if not scenario:
+            raise ValueError(f"Scenario not found: {scenario_id}")
+        
+        # Reset conversation for new scenario
+        self.reset_conversation()
+        
+        # Set current scenario
+        self.current_scenario = scenario
+        
+        # Override system prompt with scenario-specific one
+        self.system_prompt = scenario.get_system_prompt()
+        
+        logger.info(f"Started scenario: {scenario.title}")
+        
+        return scenario.get_intro_message()
+    
+    def is_in_scenario(self) -> bool:
+        """Check if currently in a scenario.
+
+        Returns:
+            True if in scenario mode
+        """
+        return self.current_scenario is not None
+    
+    def end_scenario(self) -> Dict[str, Any]:
+        """End the current scenario and get summary.
+
+        Returns:
+            Dictionary with scenario summary and statistics
+        """
+        if not self.current_scenario:
+            return {"error": "No active scenario"}
+        
+        summary = {
+            "scenario": self.current_scenario.title,
+            "duration": len(self.conversation_history) // 2,  # Number of exchanges
+            "vocabulary_practiced": self.current_scenario.vocabulary_focus,
+            "learning_objectives": self.current_scenario.learning_objectives,
+            "conversation_summary": self.get_conversation_summary()
+        }
+        
+        # Reset to normal mode
+        self.current_scenario = None
+        self.system_prompt = self.prompt_loader.get_system_prompt()
+        
+        logger.info(f"Ended scenario: {summary['scenario']}")
+        
+        return summary
+    
+    def get_scenario_progress(self) -> Optional[Dict[str, Any]]:
+        """Get progress information for current scenario.
+
+        Returns:
+            Progress dictionary or None if not in scenario
+        """
+        if not self.current_scenario:
+            return None
+        
+        exchanges = len(self.conversation_history) // 2
+        estimated_duration = self.current_scenario.duration_minutes
+        
+        return {
+            "scenario": self.current_scenario.title,
+            "exchanges_completed": exchanges,
+            "estimated_duration_minutes": estimated_duration,
+            "vocabulary_focus": self.current_scenario.vocabulary_focus,
+            "ai_character": self.current_scenario.ai_role['name']
         }

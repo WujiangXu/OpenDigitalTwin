@@ -1,0 +1,573 @@
+# Scenario-Based English Learning for CS PhD Students
+# Designed for international students in their first year in the USA
+
+metadata:
+  target_audience: "Computer Science PhD students (first year in USA)"
+  language_level: "Intermediate to Advanced"
+  focus: "Academic and professional communication"
+  version: "1.0.0"
+
+# ============================================================
+# ACADEMIC SCENARIOS
+# ============================================================
+
+academic:
+  office_hours:
+    scenario_id: "academic_office_hours"
+    title: "Meeting with Your Advisor"
+    description: "Practice discussing research progress with your PhD advisor"
+    difficulty: "intermediate"
+    duration_minutes: 15
+
+    context: |
+      You are meeting with your PhD advisor, Professor Sarah Chen, for weekly office hours.
+      You need to discuss your progress on the research project, ask for guidance on a technical
+      challenge, and get feedback on your upcoming conference paper draft.
+
+    ai_role:
+      name: "Professor Sarah Chen"
+      personality: "Supportive but busy, expects clear updates, asks probing questions"
+      speaking_style: "Professional, direct, uses academic terminology"
+
+    learning_objectives:
+      - "Summarize research progress clearly and concisely"
+      - "Ask technical questions professionally"
+      - "Respond to critical feedback constructively"
+      - "Negotiate deadlines and expectations"
+
+    vocabulary_focus:
+      - "preliminary results"
+      - "methodology"
+      - "baseline comparison"
+      - "ablation study"
+      - "statistical significance"
+      - "reproduce the results"
+
+    conversation_starters:
+      - "Hi Professor Chen, thanks for meeting with me today."
+      - "I wanted to update you on the experiments I've been running."
+      - "I've encountered a challenge with the implementation..."
+
+    ai_prompts:
+      initial: "Hello! Come in, have a seat. How's the research going this week?"
+      follow_up:
+        - "Can you walk me through your experimental setup?"
+        - "How does this compare to the baseline methods?"
+        - "What's your timeline for finishing the paper?"
+        - "Have you thought about the limitations of this approach?"
+
+  research_presentation:
+    scenario_id: "academic_presentation"
+    title: "Research Group Presentation"
+    description: "Present your research to the lab group and handle Q&A"
+    difficulty: "advanced"
+    duration_minutes: 20
+
+    context: |
+      You're presenting your current research at the weekly lab meeting. There are 15 people
+      including your advisor, senior PhD students, postdocs, and other first-year students.
+      You have prepared slides and need to explain your work clearly, then handle questions.
+
+    ai_role:
+      name: "Lab Audience"
+      personality: "Mix of supportive and critical, asks technical questions"
+      speaking_style: "Academic, sometimes interrupts with clarifications"
+
+    learning_objectives:
+      - "Structure a clear technical presentation"
+      - "Handle interruptions politely"
+      - "Answer technical questions on the spot"
+      - "Admit when you don't know something professionally"
+
+    vocabulary_focus:
+      - "Let me walk you through..."
+      - "As shown in this figure..."
+      - "That's a great question..."
+      - "I haven't explored that yet, but..."
+      - "To clarify..."
+
+    conversation_starters:
+      - "Good morning everyone, today I'll present my work on..."
+      - "Let me start with some background on the problem..."
+
+    ai_prompts:
+      initial: "Thanks for presenting! Let's start - can you remind us what problem you're solving?"
+      follow_up:
+        - "Can you zoom in on that graph? I can't see the numbers."
+        - "How does this compare to the recent NeurIPS paper on similar topics?"
+        - "What's the computational complexity of your approach?"
+        - "Have you considered using transformers instead?"
+
+  ta_duties:
+    scenario_id: "academic_ta_duties"
+    title: "Teaching Assistant Office Hours"
+    description: "Help undergraduate students with programming assignments"
+    difficulty: "intermediate"
+    duration_minutes: 15
+
+    context: |
+      You're a TA for CS 101 (Introduction to Programming). An undergraduate student comes
+      to your office hours confused about recursion and their homework assignment.
+      You need to explain the concept without giving away the solution.
+
+    ai_role:
+      name: "Confused Undergraduate Student"
+      personality: "Frustrated but trying to understand, asks basic questions"
+      speaking_style: "Informal, uses simple language"
+
+    learning_objectives:
+      - "Explain technical concepts in simple terms"
+      - "Guide without giving direct answers"
+      - "Show patience and encouragement"
+      - "Use analogies effectively"
+
+    vocabulary_focus:
+      - "Let's break this down..."
+      - "Think of it this way..."
+      - "What happens when...?"
+      - "Can you walk me through your code?"
+      - "That's on the right track!"
+
+    conversation_starters:
+      - "Hi! How can I help you today?"
+      - "Which part of the assignment are you stuck on?"
+
+    ai_prompts:
+      initial: "Hi, I'm really confused about this recursion homework. I don't get it at all."
+      follow_up:
+        - "But why does it call itself? That doesn't make sense."
+        - "Can you just show me the answer?"
+        - "I tried that but I get a stack overflow error."
+
+# ============================================================
+# CAMPUS LIFE SCENARIOS
+# ============================================================
+
+campus_life:
+  registration:
+    scenario_id: "campus_registration"
+    title: "Course Registration Meeting"
+    description: "Meet with graduate advisor to plan your course schedule"
+    difficulty: "beginner"
+    duration_minutes: 10
+
+    context: |
+      You're meeting with the graduate program coordinator to finalize your course
+      registration for the semester. You need to fulfill requirements while balancing
+      your research workload.
+
+    ai_role:
+      name: "Dr. Martinez (Program Coordinator)"
+      personality: "Helpful, knows all the rules, wants to help you succeed"
+      speaking_style: "Clear, provides lots of information"
+
+    learning_objectives:
+      - "Ask about course requirements"
+      - "Express preferences and constraints"
+      - "Understand academic policies"
+      - "Take notes during conversation"
+
+    vocabulary_focus:
+      - "core requirements"
+      - "elective courses"
+      - "prerequisite"
+      - "credit hours"
+      - "waitlist"
+      - "drop/add period"
+
+    conversation_starters:
+      - "Hi Dr. Martinez, I'm here to discuss my course schedule."
+      - "I wanted to make sure I'm meeting all the requirements."
+
+    ai_prompts:
+      initial: "Welcome! Let's look at what courses you need. Have you checked the degree requirements?"
+
+  library_navigation:
+    scenario_id: "campus_library"
+    title: "Library Research Help"
+    description: "Ask librarian for help finding research papers"
+    difficulty: "beginner"
+    duration_minutes: 10
+
+    context: |
+      You're at the university library and need help accessing research databases,
+      finding papers for your literature review, and setting up citation management.
+
+    ai_role:
+      name: "Reference Librarian"
+      personality: "Very helpful, patient, loves teaching research skills"
+      speaking_style: "Educational, step-by-step explanations"
+
+    learning_objectives:
+      - "Describe research needs clearly"
+      - "Ask for specific help"
+      - "Follow verbal instructions"
+      - "Clarify when confused"
+
+    vocabulary_focus:
+      - "literature review"
+      - "peer-reviewed"
+      - "citation manager"
+      - "interlibrary loan"
+      - "database access"
+
+    ai_prompts:
+      initial: "Hi! What can I help you find today?"
+
+# ============================================================
+# SOCIAL SCENARIOS
+# ============================================================
+
+social:
+  coffee_chat:
+    scenario_id: "social_coffee_chat"
+    title: "Coffee Chat with Senior PhD Student"
+    description: "Informal conversation with a senior student about grad school life"
+    difficulty: "intermediate"
+    duration_minutes: 15
+
+    context: |
+      You're getting coffee with Alex, a 4th-year PhD student in your lab. This is a casual
+      conversation where you want to learn about their experience, get advice, and build
+      a friendly relationship. The conversation might cover research, life balance, and
+      department culture.
+
+    ai_role:
+      name: "Alex Chen (4th year PhD)"
+      personality: "Friendly, experienced, likes to give advice, shares stories"
+      speaking_style: "Casual, uses humor, relatable"
+
+    learning_objectives:
+      - "Make small talk naturally"
+      - "Ask for advice informally"
+      - "Share your own experiences"
+      - "Build rapport through conversation"
+
+    vocabulary_focus:
+      - "work-life balance"
+      - "imposter syndrome"
+      - "burn out"
+      - "qualify exam"
+      - "thesis defense"
+      - "How's it going?"
+      - "Any tips for...?"
+
+    conversation_starters:
+      - "Thanks for meeting up! How's your research going?"
+      - "I'm curious about your experience so far in the program."
+      - "Do you have time to grab coffee?"
+
+    ai_prompts:
+      initial: "Hey! Good to see you. How are you settling into the program?"
+      follow_up:
+        - "Yeah, first year is tough. Are you finding a good routine?"
+        - "Have you thought about which area you want to focus on?"
+        - "How are you getting along with your advisor?"
+        - "Want to hear about my qualifying exam experience?"
+
+  networking_event:
+    scenario_id: "social_networking"
+    title: "Department Welcome Reception"
+    description: "Introduce yourself and network at a department social event"
+    difficulty: "intermediate"
+    duration_minutes: 12
+
+    context: |
+      You're at the department's welcome reception for new graduate students.
+      You want to introduce yourself to faculty, meet other students, and make
+      a good impression. There's food, drinks, and lots of small talk.
+
+    ai_role:
+      name: "Professor James Wilson (Faculty member)"
+      personality: "Friendly, interested in new students, asks questions"
+      speaking_style: "Polite small talk, professional but warm"
+
+    learning_objectives:
+      - "Introduce yourself concisely"
+      - "Make small talk about research interests"
+      - "Show enthusiasm appropriately"
+      - "End conversations gracefully"
+
+    vocabulary_focus:
+      - "I'm interested in..."
+      - "I'm working with Professor..."
+      - "What brings you to this area?"
+      - "It was great meeting you!"
+      - "I'd love to hear more about that."
+
+    ai_prompts:
+      initial: "Hi there! I don't think we've met. I'm Professor Wilson from the AI lab."
+
+  roommate_conversation:
+    scenario_id: "social_roommate"
+    title: "Talking with American Roommate"
+    description: "Discuss apartment issues and make plans with roommate"
+    difficulty: "beginner"
+    duration_minutes: 10
+
+    context: |
+      You share an apartment with an American student, Mike. You need to discuss
+      household chores, paying bills, having guests over, and maybe make weekend plans.
+      This is very casual, everyday conversation.
+
+    ai_role:
+      name: "Mike (American roommate)"
+      personality: "Laid-back, friendly, uses lots of slang"
+      speaking_style: "Very casual, informal, conversational"
+
+    learning_objectives:
+      - "Handle everyday practical conversations"
+      - "Negotiate and compromise"
+      - "Understand American cultural norms"
+      - "Use casual expressions naturally"
+
+    vocabulary_focus:
+      - "split the bill"
+      - "take out the trash"
+      - "do the dishes"
+      - "hang out"
+      - "grab dinner"
+      - "What's up?"
+      - "Sounds good!"
+
+    ai_prompts:
+      initial: "Hey! Got a sec? Wanted to chat about the apartment stuff."
+
+# ============================================================
+# PROFESSIONAL SCENARIOS
+# ============================================================
+
+professional:
+  conference_networking:
+    scenario_id: "prof_conference"
+    title: "Conference Networking"
+    description: "Network at a major CS conference (like NeurIPS, CVPR)"
+    difficulty: "advanced"
+    duration_minutes: 15
+
+    context: |
+      You're at a major AI conference. You just finished watching a talk that's
+      related to your research and the speaker is standing near the poster area.
+      You want to introduce yourself, discuss their work, and potentially explore
+      collaboration opportunities.
+
+    ai_role:
+      name: "Dr. Emily Roberts (Conference Speaker)"
+      personality: "Busy but approachable, interested in discussions, well-known researcher"
+      speaking_style: "Professional, technical, values intelligent questions"
+
+    learning_objectives:
+      - "Introduce yourself to senior researchers"
+      - "Discuss research at a technical level"
+      - "Ask insightful questions"
+      - "Exchange contact information professionally"
+
+    vocabulary_focus:
+      - "I really enjoyed your talk on..."
+      - "Have you considered..."
+      - "My research is related..."
+      - "Would you be open to discussing..."
+      - "Could we stay in touch?"
+
+    ai_prompts:
+      initial: "Oh hi! Thanks for coming to my talk. Did you have any questions?"
+
+  research_collaboration:
+    scenario_id: "prof_collaboration_email"
+    title: "Cold Email to Potential Collaborator"
+    description: "Practice writing and discussing a research collaboration proposal"
+    difficulty: "advanced"
+    duration_minutes: 15
+
+    context: |
+      You've read a paper by Professor Zhang at another university and you think
+      your work could complement theirs. You want to send a professional email
+      expressing interest in collaboration. Let's practice both writing the email
+      and the potential follow-up conversation.
+
+    ai_role:
+      name: "Professor Michael Zhang"
+      personality: "Senior researcher, values clear communication, selective about collaborations"
+      speaking_style: "Professional, asks about specifics, wants to understand value"
+
+    learning_objectives:
+      - "Write professional academic emails"
+      - "Propose collaboration clearly"
+      - "Explain mutual benefits"
+      - "Handle potential rejection gracefully"
+
+    vocabulary_focus:
+      - "I'm reaching out because..."
+      - "Our work complements..."
+      - "I believe there's potential for..."
+      - "Would you be interested in..."
+      - "synergy"
+      - "mutually beneficial"
+
+    ai_prompts:
+      initial: "Thanks for your email. Tell me more about your work and what you have in mind."
+
+  job_interview_technical:
+    scenario_id: "prof_job_interview"
+    title: "Research Scientist Interview"
+    description: "Practice technical interview for research position"
+    difficulty: "advanced"
+    duration_minutes: 20
+
+    context: |
+      You're interviewing for a research scientist position at a tech company
+      (Google, Meta, Microsoft Research, etc.). The interviewer wants to hear
+      about your PhD research, problem-solving approach, and how you handle
+      research challenges.
+
+    ai_role:
+      name: "Dr. Lisa Park (Hiring Manager)"
+      personality: "Professional, evaluating fit, asks behavioral and technical questions"
+      speaking_style: "Structured interview style, takes notes, probing questions"
+
+    learning_objectives:
+      - "Explain research to industry audience"
+      - "Answer behavioral questions (STAR method)"
+      - "Discuss technical trade-offs"
+      - "Ask intelligent questions about the role"
+
+    vocabulary_focus:
+      - "In my research, I..."
+      - "The challenge was..."
+      - "I approached it by..."
+      - "The impact was..."
+      - "trade-offs"
+      - "scalability"
+
+    ai_prompts:
+      initial: "Thanks for joining us today. Let's start - can you tell me about your PhD research?"
+
+# ============================================================
+# EVERYDAY SITUATIONS
+# ============================================================
+
+everyday:
+  doctor_appointment:
+    scenario_id: "everyday_doctor"
+    title: "Doctor's Appointment"
+    description: "Explain symptoms and understand medical advice"
+    difficulty: "intermediate"
+    duration_minutes: 10
+
+    context: |
+      You're at the student health center because you haven't been feeling well.
+      You need to describe your symptoms, answer questions about your medical history,
+      and understand the doctor's advice.
+
+    ai_role:
+      name: "Dr. Brown (Student Health Center)"
+      personality: "Caring, thorough, uses medical terms but explains them"
+      speaking_style: "Professional but friendly, asks detailed questions"
+
+    learning_objectives:
+      - "Describe health symptoms clearly"
+      - "Understand medical vocabulary"
+      - "Ask about prescriptions and treatment"
+      - "Clarify instructions"
+
+    vocabulary_focus:
+      - "symptoms"
+      - "allergies"
+      - "prescription"
+      - "over-the-counter"
+      - "side effects"
+      - "follow-up appointment"
+
+    ai_prompts:
+      initial: "Hello! What brings you in today? What symptoms have you been experiencing?"
+
+  grocery_shopping:
+    scenario_id: "everyday_grocery"
+    title: "Shopping at American Grocery Store"
+    description: "Ask for help finding items and understanding products"
+    difficulty: "beginner"
+    duration_minutes: 8
+
+    context: |
+      You're at a large American supermarket looking for specific ingredients
+      for cooking. Some products are unfamiliar and you need to ask store
+      employees for help.
+
+    ai_role:
+      name: "Store Employee"
+      personality: "Helpful, knows the store layout well"
+      speaking_style: "Friendly, gives directions"
+
+    learning_objectives:
+      - "Ask for location of items"
+      - "Understand American product names"
+      - "Make polite requests"
+      - "Follow directions"
+
+    vocabulary_focus:
+      - "Where can I find...?"
+      - "Do you carry...?"
+      - "Is this similar to...?"
+      - "aisle"
+      - "in stock"
+
+    ai_prompts:
+      initial: "Hi there! Are you finding everything okay?"
+
+# ============================================================
+# SCENARIO PROGRESSION SYSTEM
+# ============================================================
+
+progression:
+  first_week:
+    recommended_scenarios:
+      - "campus_registration"
+      - "campus_library"
+      - "social_roommate"
+      - "everyday_grocery"
+
+  first_month:
+    recommended_scenarios:
+      - "academic_office_hours"
+      - "social_coffee_chat"
+      - "everyday_doctor"
+      - "academic_ta_duties"
+
+  first_semester:
+    recommended_scenarios:
+      - "academic_presentation"
+      - "social_networking"
+      - "prof_conference"
+      - "prof_collaboration_email"
+
+  advanced:
+    recommended_scenarios:
+      - "prof_job_interview"
+      - "academic_presentation"
+      - "prof_conference"
+
+# ============================================================
+# CULTURAL NOTES FOR INTERNATIONAL STUDENTS
+# ============================================================
+
+cultural_notes:
+  american_academic_culture:
+    - "It's okay to call professors by first name (if they offer)"
+    - "Office hours are your time - don't apologize for 'bothering' them"
+    - "Speaking up in class is expected and valued"
+    - "Deadlines are usually strict - ask for extensions early"
+    - "Collaboration is encouraged but understand plagiarism rules"
+
+  communication_style:
+    - "Americans often use indirect language ('maybe you could consider...')"
+    - "Small talk before business is normal"
+    - "Being too formal can seem distant"
+    - "It's okay to say 'I don't know' - don't pretend to understand"
+    - "'Let's grab coffee' often means 'let's talk', not always literal"
+
+  social_norms:
+    - "RSVP to invitations (yes or no)"
+    - "Arrive on time (or within 10 minutes)"
+    - "Split the bill is common among students ('go Dutch')"
+    - "Thank you emails after meetings are professional"
+    - "Personal space: keep about arm's length"
